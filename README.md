@@ -4,9 +4,10 @@ invosData AI Skills 集合 — 可重複使用的 prompt + 程式模板，搭配
 
 ## Skills 總覽
 
-| Skill | 說明 | 輸出 |
-|-------|------|------|
-| [bcg-analysis](skills/bcg-analysis/) | BCG 策略矩陣分析（通路 x 新舊客視角） | 三頁 PPTX |
+| Skill | 說明 | 輸出 | 使用順序 |
+|-------|------|------|---------|
+| [insight-report-summary](skills/insight-report-summary/) | 市場洞察分析報告（四章 Word 文件） | .docx | 1. 先用這個 |
+| [bcg-analysis](skills/bcg-analysis/) | BCG 策略矩陣分析（通路 x 新舊客視角） | 三頁 PPTX | 2. 再用這個 |
 
 ## 快速開始
 
@@ -15,8 +16,10 @@ invosData AI Skills 集合 — 可重複使用的 prompt + 程式模板，搭配
 1. 打開任何支援程式碼執行的 AI 工具（Claude、ChatGPT、Cursor 等）
 2. 將目標 skill 的 `SKILL.md` 內容貼入對話
 3. 上傳你的市場數據報告，並說明報告期間、品類、目標品牌，例如：
-   > 此為 2025/12 MAT 益生菌市場洞察分析報告，請針對品牌「台塑生醫MD醫之方」做 BCG 分析
+   > 此為 2025/12 MAT 益生菌市場洞察分析報告，請針對品牌「台塑生醫MD醫之方」做分析
 4. AI 會依照步驟自動分析並生成報告
+
+**建議流程：** 先用 `insight-report-summary` 產出 Word 洞察報告 → 再用 `bcg-analysis` 產出 BCG 策略 PPTX
 
 ### 方式二：手動修改 template 執行
 
@@ -38,14 +41,19 @@ insight-report-skill/
 ├── package.json                           # 共用依賴
 ├── .gitignore
 ├── skills/
-│   ├── bcg-analysis/                      # BCG 策略矩陣分析
-│   │   ├── SKILL.md                       #   AI 指令（核心 prompt）
-│   │   └── references/                    #   程式碼模板 & 參考資料
+│   ├── insight-report-summary/            # ① 市場洞察分析報告（Word）
+│   │   ├── SKILL.md
+│   │   └── references/
+│   │       └── docx-template.js
+│   ├── bcg-analysis/                      # ② BCG 策略矩陣分析（PPTX）
+│   │   ├── SKILL.md
+│   │   └── references/
 │   │       └── pptx-template.js
 │   └── <your-next-skill>/                 # 未來新增的 skill
 │       ├── SKILL.md
 │       └── references/
 └── output/                                # 生成的報告（gitignored）
+    ├── insight-report-summary/
     └── bcg-analysis/
 ```
 

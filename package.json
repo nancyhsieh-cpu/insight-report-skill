@@ -4,6 +4,7 @@
   "description": "invosData AI Skills collection — reusable prompts and templates for generating market insight reports",
   "private": true,
   "dependencies": {
+    "docx": "^9.0.0",
     "pptxgenjs": "^3.12.0"
   }
 }
