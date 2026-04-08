@@ -8,6 +8,7 @@ invosData AI Skills 集合 — 可重複使用的 prompt + 程式模板，搭配
 |-------|------|------|---------|
 | [insight-report-summary](skills/insight-report-summary/) | 產出市場洞察分析報告摘要（四章 Word 文件） | .docx | 1. 先用這個 |
 | [bcg-analysis](skills/bcg-analysis/) | 產出 BCG 策略矩陣分析（通路 x 新舊客視角） | 三頁 PPTX | 2. 再用這個 |
+| [reading-guide](skills/reading-guide/) | 產出簡報閱讀邏輯（內部業務提案參考手冊） | .docx | 3. 最後用這個 |
 
 ## 快速開始
 
@@ -19,7 +20,7 @@ invosData AI Skills 集合 — 可重複使用的 prompt + 程式模板，搭配
    > 此為 2025/12 MAT 益生菌市場洞察分析報告，請針對品牌「台塑生醫MD醫之方」做分析
 4. AI 會依照步驟自動分析並生成報告
 
-**建議流程：** 先用 `insight-report-summary` 產出 Word 洞察報告 → 再用 `bcg-analysis` 產出 BCG 策略 PPTX
+**建議流程：** `insight-report-summary`（Word 洞察報告）→ `bcg-analysis`（BCG 策略 PPTX）→ `reading-guide`（內部提案手冊）
 
 ### 方式二：手動修改 template 執行
 
@@ -49,12 +50,17 @@ insight-report-skill/
 │   │   ├── SKILL.md
 │   │   └── references/
 │   │       └── pptx-template.js
+│   ├── reading-guide/                     # ③ 簡報閱讀邏輯（內部提案手冊）
+│   │   ├── SKILL.md
+│   │   └── references/
+│   │       └── generate_guide.js
 │   └── <your-next-skill>/                 # 未來新增的 skill
 │       ├── SKILL.md
 │       └── references/
 └── output/                                # 生成的報告（gitignored）
     ├── insight-report-summary/
-    └── bcg-analysis/
+    ├── bcg-analysis/
+    └── reading-guide/
 ```
 
 ## 新增 Skill 的方式
