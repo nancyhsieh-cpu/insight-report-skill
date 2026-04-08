@@ -6,8 +6,8 @@ invosData AI Skills 集合 — 可重複使用的 prompt + 程式模板，搭配
 
 | Skill | 說明 | 輸出 | 使用順序 |
 |-------|------|------|---------|
-| [insight-report-summary](skills/insight-report-summary/) | 市場洞察分析報告（四章 Word 文件） | .docx | 1. 先用這個 |
-| [bcg-analysis](skills/bcg-analysis/) | BCG 策略矩陣分析（通路 x 新舊客視角） | 三頁 PPTX | 2. 再用這個 |
+| [insight-report-summary](skills/insight-report-summary/) | 產出市場洞察分析報告摘要（四章 Word 文件） | .docx | 1. 先用這個 |
+| [bcg-analysis](skills/bcg-analysis/) | 產出 BCG 策略矩陣分析（通路 x 新舊客視角） | 三頁 PPTX | 2. 再用這個 |
 
 ## 快速開始
 
