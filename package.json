@@ -1,0 +1,9 @@
+{
+  "name": "insight-report-skill",
+  "version": "1.0.0",
+  "description": "invosData AI Skills collection — reusable prompts and templates for generating market insight reports",
+  "private": true,
+  "dependencies": {
+    "pptxgenjs": "^3.12.0"
+  }
+}
