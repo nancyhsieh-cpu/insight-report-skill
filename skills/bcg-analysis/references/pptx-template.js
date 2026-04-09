@@ -14,6 +14,10 @@ const REPORT_DATE = "2602MAT";         // 報告期間標示
 const COVER_BG_IMAGE = "";             // 封面背景圖片路徑（留空則用純色背景）
 const OUT = path.join(__dirname, `../../mnt/outputs/${BRAND_NAME}_BCG策略建議_通路新舊客版.pptx`);
 
+// ─── Global Styles ────────────────────────────────────────────
+const FONT = "Microsoft JhengHei";     // 全域字型：微軟正黑體
+const BODY_LINE_SP = 1.5;              // 全域內文行距倍數
+
 // ─── Palette ───────────────────────────────────────────────
 const C = {
   bg:         "21253A",
@@ -39,20 +43,11 @@ const C = {
 
 const makeShadow = () => ({ type: "outer", blur: 8, offset: 3, angle: 135, color: "000000", opacity: 0.25 });
 
-// ── 三色頂部色條（所有投影片共用） ─────────────────────────────
-// 橘（左 55%）+ 綠（中 25%）+ 青（右 20%），總寬 13.3"
-function drawTopBar(sl) {
-  const W = 13.3;
-  sl.addShape("rect", { x: 0,           y: 0, w: W * 0.55, h: 0.08, fill: { color: C.accent }, line: { color: C.accent, width: 0 } });
-  sl.addShape("rect", { x: W * 0.55,    y: 0, w: W * 0.25, h: 0.08, fill: { color: C.green },  line: { color: C.green, width: 0 } });
-  sl.addShape("rect", { x: W * 0.8,     y: 0, w: W * 0.2,  h: 0.08, fill: { color: C.teal },   line: { color: C.teal, width: 0 } });
-}
-
 // ── 投影片頁碼（左下角） ───────────────────────────────────────
 function drawPageNum(sl, num) {
   sl.addText(String(num), {
     x: 0.15, y: 7.1, w: 0.4, h: 0.3, margin: 0,
-    fontSize: 9, color: C.dim, align: "left", valign: "bottom"
+    fontFace: FONT, fontSize: 8, color: C.white, align: "left", valign: "bottom"
   });
 }
 
@@ -73,8 +68,6 @@ function slideCover(pres) {
     sl.background = { color: C.bg };
   }
 
-  drawTopBar(sl);
-
   // ── 中央圖示：用 shapes 組合模擬長條圖 icon ──
   const iconCX = 6.65, iconCY = 2.8;
   const barW = 0.22, barGap = 0.08;
@@ -94,13 +87,13 @@ function slideCover(pres) {
   // Sparkle / star dot (top-right of tallest bar)
   sl.addText("✦", {
     x: iconCX + 0.45, y: iconCY - 0.35, w: 0.35, h: 0.35, margin: 0,
-    fontSize: 14, color: C.white, align: "center", valign: "middle"
+    fontFace: FONT, fontSize: 12, color: C.white, align: "center", valign: "middle"
   });
 
   // ── 標題文字 ──
   sl.addText("行動建議", {
     x: 2.5, y: 3.65, w: 8.3, h: 1.2, margin: 0,
-    fontSize: 36, bold: true, color: C.white, align: "center", valign: "middle"
+    fontFace: FONT, fontSize: 36, bold: true, color: C.white, align: "center", valign: "middle"
   });
 
   drawPageNum(sl, 1);
@@ -113,75 +106,70 @@ function slide2(pres) {
   const sl = pres.addSlide();
   sl.background = { color: C.bg };
 
-  drawTopBar(sl);
-
-  sl.addText(`${BRAND_NAME}嬰幼兒奶粉｜BCG 策略矩陣（通路 × 新舊客視角）`, {
-    x: 0.3, y: 0.14, w: 8.8, h: 0.38, margin: 0,
-    fontSize: 15, bold: true, color: C.white
-  });
-  sl.addText(`${REPORT_DATE}｜invosData 引客數據`, {
-    x: 0.3, y: 0.5, w: 8.8, h: 0.24, margin: 0, fontSize: 9, color: C.muted
-  });
+  sl.addText([
+    { text: `${BRAND_NAME}嬰幼兒奶粉｜BCG 策略矩陣（通路 × 新舊客視角）`, options: { fontSize: 12, bold: true, color: C.white } },
+    { text: `   ${REPORT_DATE}｜invosData 引客數據`, options: { fontSize: 8, color: C.white } },
+  ], { x: 0.3, y: 0.14, w: 12.7, h: 0.42, margin: 0, fontFace: FONT, valign: "middle" });
 
   const LX = 0.2, LY = 0.78;
   const QW = 3.45, QH = 3.2, GAP = 0.1;
 
-  sl.addText("← 掌握度低", { x: LX, y: LY - 0.22, w: QW, h: 0.2, margin: 0, align: "center", fontSize: 7.5, color: C.dim, italic: true });
-  sl.addText("掌握度高 →", { x: LX + QW + GAP, y: LY - 0.22, w: QW, h: 0.2, margin: 0, align: "center", fontSize: 7.5, color: C.dim, italic: true });
+  sl.addText("← 掌握度低", { x: LX, y: LY - 0.22, w: QW, h: 0.2, margin: 0, align: "center", fontFace: FONT, fontSize: 8, color: C.white, italic: true });
+  sl.addText("掌握度高 →", { x: LX + QW + GAP, y: LY - 0.22, w: QW, h: 0.2, margin: 0, align: "center", fontFace: FONT, fontSize: 8, color: C.white, italic: true });
 
-  // Y-axis labels (left side, vertical text simulated)
-  sl.addText("規模大但發展受限 ↑", { x: -0.1, y: LY + QH * 0.3, w: 0.35, h: 1.2, margin: 0, fontSize: 7, color: C.dim, italic: true, rotate: 270 });
-  sl.addText("↑ 規模小但發展潛力高（進攻）", { x: -0.1, y: LY + QH + GAP + QH * 0.2, w: 0.35, h: 1.5, margin: 0, fontSize: 7, color: C.dim, italic: true, rotate: 270 });
+  // Y-axis labels (left side, vertical text)
+  sl.addText("規模大但發展受限", { x: -0.08, y: LY + QH * 0.1, w: 0.3, h: QH * 0.8, margin: 0, fontFace: FONT, fontSize: 8, color: C.white, italic: true, align: "center", valign: "middle", isTextBox: true, vert: "eaVert" });
+  sl.addText("規模小但發展潛力高", { x: -0.08, y: LY + QH + GAP + QH * 0.05, w: 0.3, h: QH * 0.9, margin: 0, fontFace: FONT, fontSize: 8, color: C.white, italic: true, align: "center", valign: "middle", isTextBox: true, vert: "eaVert" });
 
   // Dogs (top-left)
-  sl.addShape("rect", { x: LX, y: LY, w: QW, h: QH, fill: { color: "171C2A" }, line: { color: C.dog, width: 1.5 }, shadow: makeShadow() });
+  sl.addShape("rect", { x: LX, y: LY, w: QW, h: QH, line: { color: C.dog, width: 1.5 }, shadow: makeShadow() });
   sl.addShape("rect", { x: LX, y: LY, w: QW, h: 0.35, fill: { color: C.dog }, line: { color: C.dog, width: 0 } });
-  sl.addText("🐶  Dogs", { x: LX + 0.1, y: LY, w: QW - 0.2, h: 0.35, margin: 0, fontSize: 11, bold: true, color: C.white, valign: "middle" });
+  sl.addText("🐶  Dogs", { x: LX + 0.1, y: LY, w: QW - 0.2, h: 0.35, margin: 0, fontFace: FONT, fontSize: 10, bold: true, color: C.white, valign: "middle" });
   sl.addText([
-    { text: "鉑睿電商缺席", options: { bold: true, fontSize: 10, color: "D1D5DB", breakLine: true } },
-    { text: "消費者電商選牌時找不到鉑睿，直接流向卡洛塔妮", options: { fontSize: 8.5, color: C.offWhite, breakLine: true } },
+    { text: "鉑睿電商缺席", options: { bold: true, fontSize: 10, color: C.white, breakLine: true } },
+    { text: "消費者電商選牌時找不到鉑睿，直接流向卡洛塔妮", options: { fontSize: 8, color: C.white, breakLine: true } },
     { text: " ", options: { fontSize: 4, breakLine: true } },
-    { text: "實體通路雙重擠壓", options: { bold: true, fontSize: 10, color: "D1D5DB", breakLine: true } },
-    { text: "大樹/卡多摩/丁丁 三大通路人流同步下滑，通路集中依賴風險高", options: { fontSize: 8.5, color: C.offWhite } },
-  ], { x: LX + 0.12, y: LY + 0.42, w: QW - 0.22, h: QH - 0.5, valign: "top" });
+    { text: "實體通路雙重擠壓", options: { bold: true, fontSize: 10, color: C.white, breakLine: true } },
+    { text: "大樹/卡多摩/丁丁 三大通路人流同步下滑，通路集中依賴風險高", options: { fontSize: 8, color: C.white } },
+  ], { x: LX + 0.12, y: LY + 0.42, w: QW - 0.22, h: QH - 0.5, fontFace: FONT, valign: "top", lineSpacingMultiple: BODY_LINE_SP });
 
   // Cash Cow (top-right)
   const CX = LX + QW + GAP;
-  sl.addShape("rect", { x: CX, y: LY, w: QW, h: QH, fill: { color: "101825" }, line: { color: C.cashcow, width: 1.5 }, shadow: makeShadow() });
+  sl.addShape("rect", { x: CX, y: LY, w: QW, h: QH, line: { color: C.cashcow, width: 1.5 }, shadow: makeShadow() });
   sl.addShape("rect", { x: CX, y: LY, w: QW, h: 0.35, fill: { color: C.cashcow }, line: { color: C.cashcow, width: 0 } });
-  sl.addText("🐮  Cash Cow", { x: CX + 0.1, y: LY, w: QW - 0.2, h: 0.35, margin: 0, fontSize: 11, bold: true, color: C.white, valign: "middle" });
+  sl.addText("🐮  Cash Cow", { x: CX + 0.1, y: LY, w: QW - 0.2, h: 0.35, margin: 0, fontFace: FONT, fontSize: 10, bold: true, color: C.white, valign: "middle" });
   sl.addText([
-    { text: "藥局婦嬰既有客", options: { bold: true, fontSize: 10, color: "93C5FD", breakLine: true } },
-    { text: "三大通路仍是最大人流基礎，需從「等客上門」轉為主動留存", options: { fontSize: 8.5, color: C.offWhite, breakLine: true } },
+    { text: "藥局婦嬰既有客", options: { bold: true, fontSize: 10, color: C.white, breakLine: true } },
+    { text: "三大通路仍是最大人流基礎，需從「等客上門」轉為主動留存", options: { fontSize: 8, color: C.white, breakLine: true } },
     { text: " ", options: { fontSize: 4, breakLine: true } },
-    { text: "優生一階穩定回購", options: { bold: true, fontSize: 10, color: "93C5FD", breakLine: true } },
-    { text: "1,677人・購買次數與人數雙增，最穩定現金流，但停留在 NT$931 低客單", options: { fontSize: 8.5, color: C.offWhite } },
-  ], { x: CX + 0.12, y: LY + 0.42, w: QW - 0.22, h: QH - 0.5, valign: "top" });
+    { text: "優生一階穩定回購", options: { bold: true, fontSize: 10, color: C.white, breakLine: true } },
+    { text: "1,677人・購買次數與人數雙增，最穩定現金流，但停留在 NT$931 低客單", options: { fontSize: 8, color: C.white } },
+  ], { x: CX + 0.12, y: LY + 0.42, w: QW - 0.22, h: QH - 0.5, fontFace: FONT, valign: "top", lineSpacingMultiple: BODY_LINE_SP });
 
   // Question Marks (bottom-left)
   const QBY = LY + QH + GAP;
-  sl.addShape("rect", { x: LX, y: QBY, w: QW, h: QH, fill: { color: "130E22" }, line: { color: C.question, width: 1.5 }, shadow: makeShadow() });
+  sl.addShape("rect", { x: LX, y: QBY, w: QW, h: QH, line: { color: C.question, width: 1.5 }, shadow: makeShadow() });
   sl.addShape("rect", { x: LX, y: QBY, w: QW, h: 0.35, fill: { color: C.question }, line: { color: C.question, width: 0 } });
-  sl.addText("❓  Question Marks", { x: LX + 0.1, y: QBY, w: QW - 0.2, h: 0.35, margin: 0, fontSize: 11, bold: true, color: C.white, valign: "middle" });
+  sl.addText("❓  Question Marks", { x: LX + 0.1, y: QBY, w: QW - 0.2, h: 0.35, margin: 0, fontFace: FONT, fontSize: 10, bold: true, color: C.white, valign: "middle" });
   sl.addText([
-    { text: "品類新客攻防", options: { bold: true, fontSize: 10, color: "C4B5FD", breakLine: true } },
-    { text: "卡洛塔妮 +71% 正搶佔新手父母，美強生無主動觸達新客的機制", options: { fontSize: 8.5, color: C.offWhite, breakLine: true } },
+    { text: "品類新客攻防", options: { bold: true, fontSize: 10, color: C.white, breakLine: true } },
+    { text: "卡洛塔妮 +71% 正搶佔新手父母，美強生無主動觸達新客的機制", options: { fontSize: 8, color: C.white, breakLine: true } },
     { text: " ", options: { fontSize: 4, breakLine: true } },
-    { text: "電商第二通路", options: { bold: true, fontSize: 10, color: "C4B5FD", breakLine: true } },
-    { text: "momo/蝦皮官方旗艦存在感低，選牌時消費者優先看到競品", options: { fontSize: 8.5, color: C.offWhite } },
-  ], { x: LX + 0.12, y: QBY + 0.42, w: QW - 0.22, h: QH - 0.5, valign: "top" });
+    { text: "電商第二通路", options: { bold: true, fontSize: 10, color: C.white, breakLine: true } },
+    { text: "momo/蝦皮官方旗艦存在感低，選牌時消費者優先看到競品", options: { fontSize: 8, color: C.white } },
+  ], { x: LX + 0.12, y: QBY + 0.42, w: QW - 0.22, h: QH - 0.5, fontFace: FONT, valign: "top", lineSpacingMultiple: BODY_LINE_SP });
 
   // Star (bottom-right)
-  sl.addShape("rect", { x: CX, y: QBY, w: QW, h: QH, fill: { color: "1A1208" }, line: { color: C.star, width: 1.5 }, shadow: makeShadow() });
+  sl.addShape("rect", { x: CX, y: QBY, w: QW, h: QH, line: { color: C.star, width: 1.5 }, shadow: makeShadow() });
   sl.addShape("rect", { x: CX, y: QBY, w: QW, h: 0.35, fill: { color: C.star }, line: { color: C.star, width: 0 } });
-  sl.addText("⭐  Star", { x: CX + 0.1, y: QBY, w: QW - 0.2, h: 0.35, margin: 0, fontSize: 11, bold: true, color: "1A1A1A", valign: "middle" });
+  sl.addText("⭐  Star", { x: CX + 0.1, y: QBY, w: QW - 0.2, h: 0.35, margin: 0, fontFace: FONT, fontSize: 10, bold: true, color: "1A1A1A", valign: "middle" });
   sl.addText([
-    { text: "品牌舊客升級路徑", options: { bold: true, fontSize: 10, color: "FDE68A", breakLine: true } },
-    { text: "優生1,677人黏性已確認，升級機制一建立即可解鎖 LTV 3–4 倍提升", options: { fontSize: 8.5, color: C.offWhite, breakLine: true } },
+    { text: "品牌舊客升級路徑", options: { bold: true, fontSize: 10, color: C.white, breakLine: true } },
+    { text: "優生1,677人黏性已確認，升級機制一建立即可解鎖 LTV 3–4 倍提升", options: { fontSize: 8, color: C.white, breakLine: true } },
     { text: " ", options: { fontSize: 4, breakLine: true } },
-    { text: "競品轉換客（交叉購買者）", options: { bold: true, fontSize: 10, color: "FDE68A", breakLine: true } },
-    { text: "發票可識別「卡洛塔妮×優生同期購買者」，美強生獨有競爭情報優勢", options: { fontSize: 8.5, color: C.offWhite } },
-  ], { x: CX + 0.12, y: QBY + 0.42, w: QW - 0.22, h: QH - 0.5, valign: "top" });
+    { text: "競品轉換客（交叉購買者）", options: { bold: true, fontSize: 10, color: C.white, breakLine: true } },
+    { text: "發票可識別「卡洛塔妮×優生同期購買者」，美強生獨有競爭情報優勢", options: { fontSize: 8, color: C.white } },
+  ], { x: CX + 0.12, y: QBY + 0.42, w: QW - 0.22, h: QH - 0.5, fontFace: FONT, valign: "top", lineSpacingMultiple: BODY_LINE_SP });
 
   // BCG cross divider
   const MX = LX + QW + GAP / 2;
@@ -195,7 +183,7 @@ function slide2(pres) {
 
   sl.addText("策略定位說明", {
     x: RX, y: LY - 0.22, w: RW, h: 0.2, margin: 0,
-    fontSize: 9.5, bold: true, color: C.muted, italic: true
+    fontFace: FONT, fontSize: 10, bold: true, color: C.white, italic: true
   });
 
   const HDR = 0.27, DESC_Y = 0.30, DESC_H = 0.33, DIV_Y = 0.65, LBL_Y = 0.68, BULL_Y = 0.87;
@@ -245,15 +233,15 @@ function slide2(pres) {
 
   stratBoxes.forEach((b, i) => {
     const BY = RY + i * (boxH4 + GAP);
-    sl.addShape("rect", { x: RX, y: BY, w: RW, h: boxH4, fill: { color: C.bgCard }, line: { color: b.color, width: 2 }, shadow: makeShadow() });
+    sl.addShape("rect", { x: RX, y: BY, w: RW, h: boxH4, line: { color: b.color, width: 2 }, shadow: makeShadow() });
     sl.addShape("rect", { x: RX, y: BY, w: RW, h: HDR, fill: { color: b.color }, line: { color: b.color, width: 0 } });
-    sl.addText(b.title, { x: RX + 0.1, y: BY, w: RW - 0.15, h: HDR, margin: 0, valign: "middle", fontSize: 10.5, bold: true, color: b.titleColor });
-    sl.addText(b.desc, { x: RX + 0.15, y: BY + DESC_Y, w: RW - 0.28, h: DESC_H, margin: 0, fontSize: 8.5, color: C.offWhite, wrap: true });
+    sl.addText(b.title, { x: RX + 0.1, y: BY, w: RW - 0.15, h: HDR, margin: 0, valign: "middle", fontFace: FONT, fontSize: 10, bold: true, color: b.titleColor });
+    sl.addText(b.desc, { x: RX + 0.15, y: BY + DESC_Y, w: RW - 0.28, h: DESC_H, margin: 0, fontFace: FONT, fontSize: 8, color: C.white, wrap: true, lineSpacingMultiple: BODY_LINE_SP });
     sl.addShape("rect", { x: RX + 0.15, y: BY + DIV_Y, w: RW - 0.28, h: 0.022, fill: { color: b.color }, line: { color: b.color, width: 0 } });
-    sl.addText("關鍵資訊", { x: RX + 0.15, y: BY + LBL_Y, w: RW - 0.28, h: 0.18, margin: 0, fontSize: 8.5, bold: true, color: b.labelColor });
+    sl.addText("關鍵資訊", { x: RX + 0.15, y: BY + LBL_Y, w: RW - 0.28, h: 0.18, margin: 0, fontFace: FONT, fontSize: 8, bold: true, color: b.labelColor });
     sl.addText(
-      b.bullets.map((t, j) => ({ text: t, options: { bullet: true, fontSize: 8.5, color: C.offWhite, breakLine: j < b.bullets.length - 1, paraSpaceAfter: 3 } })),
-      { x: RX + 0.15, y: BY + BULL_Y, w: RW - 0.28, h: boxH4 - BULL_Y - 0.04, valign: "top" }
+      b.bullets.map((t, j) => ({ text: t, options: { bullet: true, fontSize: 8, color: C.white, breakLine: j < b.bullets.length - 1, paraSpaceAfter: 3 } })),
+      { x: RX + 0.15, y: BY + BULL_Y, w: RW - 0.28, h: boxH4 - BULL_Y - 0.04, fontFace: FONT, valign: "top", lineSpacingMultiple: BODY_LINE_SP }
     );
   });
 
@@ -277,12 +265,12 @@ function drawColHeaders(sl, X0, Y0, CW, full) {
     const hh = full ? 0.75 : 0.52;
     sl.addShape("rect", { x: cx, y: Y0, w: CW - 0.04, h: hh, fill: { color: C.bgPanel }, line: { color: col.badgeColor, width: 0.8 } });
     sl.addShape("rect", { x: cx, y: Y0, w: CW - 0.04, h: 0.05, fill: { color: col.badgeColor }, line: { color: col.badgeColor, width: 0 } });
-    sl.addText(col.label, { x: cx + 0.06, y: Y0 + 0.06, w: CW - 0.16, h: 0.24, margin: 0, fontSize: 10.5, bold: true, color: C.white });
-    sl.addText(col.sub,   { x: cx + 0.06, y: Y0 + 0.28, w: CW - 0.16, h: 0.18, margin: 0, fontSize: 8.5, color: C.muted });
+    sl.addText(col.label, { x: cx + 0.06, y: Y0 + 0.06, w: CW - 0.16, h: 0.24, margin: 0, fontFace: FONT, fontSize: 10, bold: true, color: C.white });
+    sl.addText(col.sub,   { x: cx + 0.06, y: Y0 + 0.28, w: CW - 0.16, h: 0.18, margin: 0, fontFace: FONT, fontSize: 8, color: C.white });
     if (full) {
       sl.addShape("rect", { x: cx + 0.06, y: Y0 + 0.46, w: CW - 0.18, h: 0.02, fill: { color: col.badgeColor }, line: { color: col.badgeColor, width: 0 } });
-      sl.addText(col.badge, { x: cx + 0.06, y: Y0 + 0.5, w: CW * 0.66, h: 0.2, margin: 0, fontSize: 8.5, bold: true, color: col.badgeColor });
-      sl.addText(col.note,  { x: cx + 0.06, y: Y0 + 0.5, w: CW - 0.14, h: 0.2, margin: 0, align: "right", fontSize: 7.5, color: C.dim });
+      sl.addText(col.badge, { x: cx + 0.06, y: Y0 + 0.5, w: CW * 0.66, h: 0.2, margin: 0, fontFace: FONT, fontSize: 8, bold: true, color: col.badgeColor });
+      sl.addText(col.note,  { x: cx + 0.06, y: Y0 + 0.5, w: CW - 0.14, h: 0.2, margin: 0, align: "right", fontFace: FONT, fontSize: 8, color: C.white });
     }
   }
 }
@@ -294,33 +282,31 @@ function drawColHeaders(sl, X0, Y0, CW, full) {
 function drawRow(sl, label, color, bg, data, X0, rowY, CW, rowH) {
   const TW = CW * 5;
   sl.addShape("rect", { x: X0, y: rowY, w: TW, h: 0.27, fill: { color: bg }, line: { color, width: 0.5 } });
-  sl.addText(label, { x: X0 + 0.1, y: rowY, w: TW - 0.2, h: 0.27, margin: 0, fontSize: 10, bold: true, color, valign: "middle" });
+  sl.addText(label, { x: X0 + 0.1, y: rowY, w: TW - 0.2, h: 0.27, margin: 0, fontFace: FONT, fontSize: 10, bold: true, color, valign: "middle" });
   const cY = rowY + 0.27;
   for (let c = 0; c < 5; c++) {
     const cx = X0 + c * CW;
-    sl.addShape("rect", { x: cx, y: cY, w: CW - 0.04, h: rowH, fill: { color: C.bgCard }, line: { color: C.dim, width: 0.5 } });
+    sl.addShape("rect", { x: cx, y: cY, w: CW - 0.04, h: rowH, line: { color: C.dim, width: 0.5 } });
     const bArr = [];
     data[c].forEach((item, i) => {
       const isLast = (i === data[c].length - 1);
       const [txt, ref] = Array.isArray(item) ? item : [item, null];
       if (ref) {
-        // bullet text run (no breakLine yet — the ref run handles paragraph break)
-        bArr.push({ text: txt + "  ", options: { bullet: true, fontSize: 9, color: C.offWhite } });
-        // inline page ref — small, gray, italic; breakLine separates paragraphs
+        bArr.push({ text: txt + "  ", options: { bullet: true, fontSize: 8, color: C.white } });
         bArr.push({ text: ref, options: {
-          fontSize: 7, color: "64748B", italic: true,
+          fontSize: 8, color: C.dim, italic: true,
           breakLine: !isLast,
           paraSpaceAfter: !isLast ? 3.5 : 0
         }});
       } else {
         bArr.push({ text: txt, options: {
-          bullet: true, fontSize: 9, color: C.offWhite,
+          bullet: true, fontSize: 8, color: C.white,
           breakLine: !isLast,
           paraSpaceAfter: !isLast ? 3.5 : 0
         }});
       }
     });
-    sl.addText(bArr, { x: cx + 0.08, y: cY + 0.09, w: CW - 0.2, h: rowH - 0.14, valign: "top" });
+    sl.addText(bArr, { x: cx + 0.08, y: cY + 0.09, w: CW - 0.2, h: rowH - 0.14, fontFace: FONT, valign: "top", lineSpacingMultiple: BODY_LINE_SP });
   }
 }
 
@@ -330,9 +316,8 @@ function drawRow(sl, label, color, bg, data, X0, rowY, CW, rowH) {
 function slide3(pres) {
   const sl = pres.addSlide();
   sl.background = { color: C.bg };
-  drawTopBar(sl);
   sl.addText(`${BRAND_NAME}嬰幼兒奶粉｜當前瓶頸 × 核心機會`, {
-    x: 0.25, y: 0.1, w: 12.8, h: 0.36, margin: 0, fontSize: 13, bold: true, color: C.white
+    x: 0.25, y: 0.1, w: 12.8, h: 0.36, margin: 0, fontFace: FONT, fontSize: 12, bold: true, color: C.white
   });
 
   const X0 = 0.2, Y0 = 0.5, CW = (13.3 - X0 * 2) / 5;
@@ -426,9 +411,8 @@ function slide3(pres) {
 function slide4(pres) {
   const sl = pres.addSlide();
   sl.background = { color: C.bg };
-  drawTopBar(sl);
   sl.addText(`${BRAND_NAME}嬰幼兒奶粉｜行動建議 × invosData 數據解決方案`, {
-    x: 0.25, y: 0.1, w: 12.8, h: 0.36, margin: 0, fontSize: 13, bold: true, color: C.white
+    x: 0.25, y: 0.1, w: 12.8, h: 0.36, margin: 0, fontFace: FONT, fontSize: 12, bold: true, color: C.white
   });
 
   const X0 = 0.2, Y0 = 0.5, CW = (13.3 - X0 * 2) / 5;
@@ -501,38 +485,38 @@ function slide4(pres) {
   let rowY = Y0 + 0.54;
 
   sl.addShape("rect", { x: X0, y: rowY, w: CW * 5, h: 0.27, fill: { color: "1A100A" }, line: { color: C.accent, width: 0.5 } });
-  sl.addText("行動建議", { x: X0 + 0.1, y: rowY, w: CW * 5 - 0.2, h: 0.27, margin: 0, fontSize: 10, bold: true, color: C.accent, valign: "middle" });
+  sl.addText("行動建議", { x: X0 + 0.1, y: rowY, w: CW * 5 - 0.2, h: 0.27, margin: 0, fontFace: FONT, fontSize: 10, bold: true, color: C.accent, valign: "middle" });
   rowY += 0.27;
 
   const actionH = 2.08;
   for (let c = 0; c < 5; c++) {
     const cx = X0 + c * CW;
-    sl.addShape("rect", { x: cx, y: rowY, w: CW - 0.04, h: actionH, fill: { color: C.bgCard }, line: { color: C.dim, width: 0.5 } });
+    sl.addShape("rect", { x: cx, y: rowY, w: CW - 0.04, h: actionH, line: { color: C.dim, width: 0.5 } });
     const bArr = actions[c].map((t, i) => ({
-      text: t, options: { bullet: true, fontSize: 9, color: C.offWhite, breakLine: i < actions[c].length - 1, paraSpaceAfter: 3 }
+      text: t, options: { bullet: true, fontSize: 8, color: C.white, breakLine: i < actions[c].length - 1, paraSpaceAfter: 3 }
     }));
-    sl.addText(bArr, { x: cx + 0.08, y: rowY + 0.08, w: CW - 0.2, h: actionH - 0.38, valign: "top" });
+    sl.addText(bArr, { x: cx + 0.08, y: rowY + 0.08, w: CW - 0.2, h: actionH - 0.38, fontFace: FONT, valign: "top", lineSpacingMultiple: BODY_LINE_SP });
     const tags = actionTags[c];
     for (let t = 0; t < tags.length; t++) {
       sl.addShape("rect", { x: cx + 0.08 + t * 1.2, y: rowY + actionH - 0.26, w: 1.1, h: 0.2, fill: { color: tags[t].color }, line: { color: tags[t].color, width: 0 } });
-      sl.addText(tags[t].label, { x: cx + 0.08 + t * 1.2, y: rowY + actionH - 0.26, w: 1.1, h: 0.2, margin: 0, align: "center", valign: "middle", fontSize: 7.5, bold: true, color: C.white });
+      sl.addText(tags[t].label, { x: cx + 0.08 + t * 1.2, y: rowY + actionH - 0.26, w: 1.1, h: 0.2, margin: 0, align: "center", valign: "middle", fontFace: FONT, fontSize: 8, bold: true, color: C.white });
     }
   }
   rowY += actionH + 0.04;
 
   sl.addShape("rect", { x: X0, y: rowY, w: CW * 5, h: 0.27, fill: { color: "090F0D" }, line: { color: C.insight, width: 0.5 } });
-  sl.addText("▶  invosData 數據解決方案", { x: X0 + 0.1, y: rowY, w: CW * 5 - 0.2, h: 0.27, margin: 0, fontSize: 10, bold: true, color: "4ADE80", valign: "middle" });
+  sl.addText("▶  invosData 數據解決方案", { x: X0 + 0.1, y: rowY, w: CW * 5 - 0.2, h: 0.27, margin: 0, fontFace: FONT, fontSize: 10, bold: true, color: "4ADE80", valign: "middle" });
   rowY += 0.27;
 
   const svcH = 3.12;
   for (let c = 0; c < 5; c++) {
     const cx = X0 + c * CW;
-    sl.addShape("rect", { x: cx, y: rowY, w: CW - 0.04, h: svcH, fill: { color: C.bgDark }, line: { color: C.dim, width: 0.5 } });
+    sl.addShape("rect", { x: cx, y: rowY, w: CW - 0.04, h: svcH, line: { color: C.dim, width: 0.5 } });
     let iy = rowY + 0.1;
     for (const item of solutions[c].items) {
       sl.addShape("rect", { x: cx + 0.07, y: iy, w: 1.55, h: 0.2, fill: { color: item.color }, line: { color: item.color, width: 0 } });
-      sl.addText("▶ " + item.svc, { x: cx + 0.07, y: iy, w: 1.55, h: 0.2, margin: 0, align: "center", valign: "middle", fontSize: 7.5, bold: true, color: C.white });
-      sl.addText(item.text, { x: cx + 0.07, y: iy + 0.22, w: CW - 0.18, h: 0.68, margin: 0, fontSize: 8.5, color: C.offWhite, wrap: true });
+      sl.addText("▶ " + item.svc, { x: cx + 0.07, y: iy, w: 1.55, h: 0.2, margin: 0, align: "center", valign: "middle", fontFace: FONT, fontSize: 8, bold: true, color: C.white });
+      sl.addText(item.text, { x: cx + 0.07, y: iy + 0.22, w: CW - 0.18, h: 0.68, margin: 0, fontFace: FONT, fontSize: 8, color: C.white, wrap: true, lineSpacingMultiple: BODY_LINE_SP });
       iy += 0.95;
     }
   }
