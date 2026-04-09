@@ -16,7 +16,7 @@ invosData AI Skills 集合 — 可重複使用的 prompt + 程式模板，搭配
 
 ### ① insight-report-summary — 市場洞察分析報告摘要（Word）
 
-> 範例檔案：[`台塑生醫MD醫之方益生菌市場洞察分析報告_invos.docx`](examples/台塑生醫MD醫之方益生菌市場洞察分析報告_invos.docx)
+> 範例檔案：[`台塑生醫MD醫之方益生菌市場洞察分析報告摘要_invos.docx`](examples/台塑生醫MD醫之方益生菌市場洞察分析報告摘要_invos.docx)
 
 四章結構的 Word 文件，約 10–15 頁：
 
@@ -92,7 +92,7 @@ insight-report-skill/
 ├── package.json                           # 共用依賴
 ├── .gitignore
 ├── examples/                              # 各 skill 的實際產出範例
-│   ├── 台塑生醫MD醫之方益生菌市場洞察分析報告_invos.docx
+│   ├── 台塑生醫MD醫之方益生菌市場洞察分析報告摘要_invos.docx
 │   ├── 台塑生醫MD醫之方_BCG策略建議_通路新舊客版.pptx
 │   └── 威德_睡眠益生菌_閱讀邏輯.docx
 ├── skills/
