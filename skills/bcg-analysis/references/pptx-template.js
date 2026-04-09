@@ -2,7 +2,7 @@
 // ════════════════════════════════════════════════════════════
 //  invosData BCG 策略矩陣 PPTX Template
 //  使用方式：複製此檔案，修改下方 ── BRAND CONFIG ── 區塊
-//  即可為任何品牌生成三頁 BCG 策略投影片
+//  即可為任何品牌生成四頁 BCG 策略投影片
 // ════════════════════════════════════════════════════════════
 const pptxgen = require("pptxgenjs");
 const path = require("path");
@@ -11,14 +11,11 @@ const path = require("path");
 // 修改以下三個變數，其餘程式碼保持不變
 const BRAND_NAME  = "美強生";          // 品牌名稱（用於標題與檔名）
 const REPORT_DATE = "2602MAT";         // 報告期間標示
-const fs = require("fs");
-const OUT_DIR = path.join(__dirname, "../../../output/bcg-analysis");
-if (!fs.existsSync(OUT_DIR)) fs.mkdirSync(OUT_DIR, { recursive: true });
-const OUT = path.join(OUT_DIR, `${BRAND_NAME}_BCG策略建議_通路新舊客版.pptx`);
+const OUT = path.join(__dirname, `../../mnt/outputs/${BRAND_NAME}_BCG策略建議_通路新舊客版.pptx`);
 
 // ─── Palette ───────────────────────────────────────────────
 const C = {
-  bg:         "13182A",
+  bg:         "21253A",
   bgPanel:    "1C2440",
   bgCard:     "232C4A",
   bgDark:     "0E1220",
@@ -29,7 +26,9 @@ const C = {
   insight:    "16A34A",
   media:      "0891B2",
   api:        "7C3AED",
-  accent:     "F97316",
+  accent:     "F28165",
+  teal:       "008786",
+  red:        "C33B0E",
   warn:       "EF4444",
   white:      "FFFFFF",
   offWhite:   "E2E8F0",
@@ -39,15 +38,71 @@ const C = {
 
 const makeShadow = () => ({ type: "outer", blur: 8, offset: 3, angle: 135, color: "000000", opacity: 0.25 });
 
+// ── 三色頂部色條（所有投影片共用） ─────────────────────────────
+// 橘（左 60%）+ 青（中 20%）+ 紅（右 20%），總寬 13.3"
+function drawTopBar(sl) {
+  const W = 13.3;
+  sl.addShape("rect", { x: 0,         y: 0, w: W * 0.6, h: 0.08, fill: { color: C.accent }, line: { color: C.accent, width: 0 } });
+  sl.addShape("rect", { x: W * 0.6,   y: 0, w: W * 0.2, h: 0.08, fill: { color: C.teal },   line: { color: C.teal, width: 0 } });
+  sl.addShape("rect", { x: W * 0.8,   y: 0, w: W * 0.2, h: 0.08, fill: { color: C.red },    line: { color: C.red, width: 0 } });
+}
+
+// ── 投影片頁碼（左下角） ───────────────────────────────────────
+function drawPageNum(sl, num) {
+  sl.addText(String(num), {
+    x: 0.15, y: 7.1, w: 0.4, h: 0.3, margin: 0,
+    fontSize: 9, color: C.dim, align: "left", valign: "bottom"
+  });
+}
+
 // ════════════════════════════════════════════════════════════
-//  SLIDE 1 — BCG 矩陣 + 策略定位說明（合併版）
+//  SLIDE 1 — 封面頁
 // ════════════════════════════════════════════════════════════
-function slide1(pres) {
+function slideCover(pres) {
   const sl = pres.addSlide();
   sl.background = { color: C.bg };
 
-  sl.addShape("rect", { x: 0, y: 0, w: 13.3, h: 0.07, fill: { color: C.accent }, line: { color: C.accent, width: 0 } });
-  sl.addShape("rect", { x: 0, y: 0.07, w: 13.3, h: 0.03, fill: { color: C.star }, line: { color: C.star, width: 0 } });
+  drawTopBar(sl);
+
+  // ── 中央圖示：用 shapes 組合模擬長條圖 icon ──
+  const iconCX = 6.65, iconCY = 2.8;
+  const barW = 0.22, barGap = 0.08;
+  const bars = [
+    { h: 0.45, y: iconCY + 0.55 },  // short bar
+    { h: 0.7,  y: iconCY + 0.3 },   // medium bar
+    { h: 1.0,  y: iconCY },          // tall bar
+  ];
+  // Chart frame (L-shaped axes)
+  sl.addShape("rect", { x: iconCX - 0.55, y: iconCY - 0.15, w: 0.06, h: 1.25, fill: { color: C.white }, line: { color: C.white, width: 0 } });
+  sl.addShape("rect", { x: iconCX - 0.55, y: iconCY + 1.04, w: 1.6, h: 0.06, fill: { color: C.white }, line: { color: C.white, width: 0 } });
+  // Bars
+  bars.forEach((b, i) => {
+    const bx = iconCX - 0.15 + i * (barW + barGap);
+    sl.addShape("rect", { x: bx, y: b.y, w: barW, h: b.h, fill: { color: C.white }, line: { color: C.white, width: 0 } });
+  });
+  // Sparkle / star dot (top-right of tallest bar)
+  sl.addText("✦", {
+    x: iconCX + 0.45, y: iconCY - 0.35, w: 0.35, h: 0.35, margin: 0,
+    fontSize: 14, color: C.white, align: "center", valign: "middle"
+  });
+
+  // ── 標題文字 ──
+  sl.addText("行動建議", {
+    x: 2.5, y: 3.65, w: 8.3, h: 1.2, margin: 0,
+    fontSize: 36, bold: true, color: C.white, align: "center", valign: "middle"
+  });
+
+  drawPageNum(sl, 1);
+}
+
+// ════════════════════════════════════════════════════════════
+//  SLIDE 2 — BCG 矩陣 + 策略定位說明（合併版）
+// ════════════════════════════════════════════════════════════
+function slide2(pres) {
+  const sl = pres.addSlide();
+  sl.background = { color: C.bg };
+
+  drawTopBar(sl);
 
   sl.addText(`${BRAND_NAME}嬰幼兒奶粉｜BCG 策略矩陣（通路 × 新舊客視角）`, {
     x: 0.3, y: 0.14, w: 8.8, h: 0.38, margin: 0,
@@ -62,6 +117,10 @@ function slide1(pres) {
 
   sl.addText("← 掌握度低", { x: LX, y: LY - 0.22, w: QW, h: 0.2, margin: 0, align: "center", fontSize: 7.5, color: C.dim, italic: true });
   sl.addText("掌握度高 →", { x: LX + QW + GAP, y: LY - 0.22, w: QW, h: 0.2, margin: 0, align: "center", fontSize: 7.5, color: C.dim, italic: true });
+
+  // Y-axis labels (left side, vertical text simulated)
+  sl.addText("規模大但發展受限 ↑", { x: -0.1, y: LY + QH * 0.3, w: 0.35, h: 1.2, margin: 0, fontSize: 7, color: C.dim, italic: true, rotate: 270 });
+  sl.addText("↑ 規模小但發展潛力高（進攻）", { x: -0.1, y: LY + QH + GAP + QH * 0.2, w: 0.35, h: 1.5, margin: 0, fontSize: 7, color: C.dim, italic: true, rotate: 270 });
 
   // Dogs (top-left)
   sl.addShape("rect", { x: LX, y: LY, w: QW, h: QH, fill: { color: "171C2A" }, line: { color: C.dog, width: 1.5 }, shadow: makeShadow() });
@@ -186,10 +245,12 @@ function slide1(pres) {
       { x: RX + 0.15, y: BY + BULL_Y, w: RW - 0.28, h: boxH4 - BULL_Y - 0.04, valign: "top" }
     );
   });
+
+  drawPageNum(sl, 2);
 }
 
 // ════════════════════════════════════════════════════════════
-//  COLUMN CONFIG (shared by slides 2 & 3)
+//  COLUMN CONFIG (shared by slides 3 & 4)
 // ════════════════════════════════════════════════════════════
 const COLS = [
   { label: "藥局婦嬰通路整體",   sub: "大樹 / 卡多摩 / 丁丁",        badge: "🐮 Cash Cow",       badgeColor: C.cashcow,  note: "最大客群 | 通路人流下滑中" },
@@ -253,13 +314,13 @@ function drawRow(sl, label, color, bg, data, X0, rowY, CW, rowH) {
 }
 
 // ════════════════════════════════════════════════════════════
-//  SLIDE 2 — 當前瓶頸 × 核心機會
+//  SLIDE 3 — 當前瓶頸 × 核心機會
 // ════════════════════════════════════════════════════════════
-function slide2(pres) {
+function slide3(pres) {
   const sl = pres.addSlide();
   sl.background = { color: C.bg };
-  sl.addShape("rect", { x: 0, y: 0, w: 13.3, h: 0.07, fill: { color: C.accent }, line: { color: C.accent, width: 0 } });
-  sl.addText(`${BRAND_NAME}品牌策略分析｜當前瓶頸 × 核心機會`, {
+  drawTopBar(sl);
+  sl.addText(`${BRAND_NAME}嬰幼兒奶粉｜當前瓶頸 × 核心機會`, {
     x: 0.25, y: 0.1, w: 12.8, h: 0.36, margin: 0, fontSize: 13, bold: true, color: C.white
   });
 
@@ -344,16 +405,18 @@ function slide2(pres) {
   const rowY1 = Y0 + 0.78, rowH = 2.28;
   drawRow(sl, "當前瓶頸", C.warn, "1F0909", bottlenecks, X0, rowY1, CW, rowH);
   drawRow(sl, "核心機會", "22C55E", "091F09", opps, X0, rowY1 + 0.27 + rowH + 0.05, CW, rowH);
+
+  drawPageNum(sl, 3);
 }
 
 // ════════════════════════════════════════════════════════════
-//  SLIDE 3 — 行動建議 × invosData 方案
+//  SLIDE 4 — 行動建議 × invosData 方案
 // ════════════════════════════════════════════════════════════
-function slide3(pres) {
+function slide4(pres) {
   const sl = pres.addSlide();
   sl.background = { color: C.bg };
-  sl.addShape("rect", { x: 0, y: 0, w: 13.3, h: 0.07, fill: { color: C.accent }, line: { color: C.accent, width: 0 } });
-  sl.addText(`${BRAND_NAME}品牌策略分析｜行動建議 × invosData 數據解決方案`, {
+  drawTopBar(sl);
+  sl.addText(`${BRAND_NAME}嬰幼兒奶粉｜行動建議 × invosData 數據解決方案`, {
     x: 0.25, y: 0.1, w: 12.8, h: 0.36, margin: 0, fontSize: 13, bold: true, color: C.white
   });
 
@@ -462,6 +525,8 @@ function slide3(pres) {
       iy += 0.95;
     }
   }
+
+  drawPageNum(sl, 4);
 }
 
 // ════════════════════════════════════════════════════════════
@@ -473,9 +538,10 @@ async function main() {
   pres.title = `${BRAND_NAME} BCG策略建議（通路×新舊客版）`;
   pres.author = "invosData";
 
-  slide1(pres);
+  slideCover(pres);
   slide2(pres);
   slide3(pres);
+  slide4(pres);
 
   await pres.writeFile({ fileName: OUT });
   console.log("✅  Saved:", OUT);
