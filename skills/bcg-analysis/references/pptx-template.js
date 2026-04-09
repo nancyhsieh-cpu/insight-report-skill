@@ -8,9 +8,10 @@ const pptxgen = require("pptxgenjs");
 const path = require("path");
 
 // ── BRAND CONFIG ─────────────────────────────────────────────
-// 修改以下三個變數，其餘程式碼保持不變
+// 修改以下變數，其餘程式碼保持不變
 const BRAND_NAME  = "美強生";          // 品牌名稱（用於標題與檔名）
 const REPORT_DATE = "2602MAT";         // 報告期間標示
+const COVER_BG_IMAGE = "";             // 封面背景圖片路徑（留空則用純色背景）
 const OUT = path.join(__dirname, `../../mnt/outputs/${BRAND_NAME}_BCG策略建議_通路新舊客版.pptx`);
 
 // ─── Palette ───────────────────────────────────────────────
@@ -27,8 +28,8 @@ const C = {
   media:      "0891B2",
   api:        "7C3AED",
   accent:     "F28165",
+  green:      "3BA676",
   teal:       "008786",
-  red:        "C33B0E",
   warn:       "EF4444",
   white:      "FFFFFF",
   offWhite:   "E2E8F0",
@@ -39,12 +40,12 @@ const C = {
 const makeShadow = () => ({ type: "outer", blur: 8, offset: 3, angle: 135, color: "000000", opacity: 0.25 });
 
 // ── 三色頂部色條（所有投影片共用） ─────────────────────────────
-// 橘（左 60%）+ 青（中 20%）+ 紅（右 20%），總寬 13.3"
+// 橘（左 55%）+ 綠（中 25%）+ 青（右 20%），總寬 13.3"
 function drawTopBar(sl) {
   const W = 13.3;
-  sl.addShape("rect", { x: 0,         y: 0, w: W * 0.6, h: 0.08, fill: { color: C.accent }, line: { color: C.accent, width: 0 } });
-  sl.addShape("rect", { x: W * 0.6,   y: 0, w: W * 0.2, h: 0.08, fill: { color: C.teal },   line: { color: C.teal, width: 0 } });
-  sl.addShape("rect", { x: W * 0.8,   y: 0, w: W * 0.2, h: 0.08, fill: { color: C.red },    line: { color: C.red, width: 0 } });
+  sl.addShape("rect", { x: 0,           y: 0, w: W * 0.55, h: 0.08, fill: { color: C.accent }, line: { color: C.accent, width: 0 } });
+  sl.addShape("rect", { x: W * 0.55,    y: 0, w: W * 0.25, h: 0.08, fill: { color: C.green },  line: { color: C.green, width: 0 } });
+  sl.addShape("rect", { x: W * 0.8,     y: 0, w: W * 0.2,  h: 0.08, fill: { color: C.teal },   line: { color: C.teal, width: 0 } });
 }
 
 // ── 投影片頁碼（左下角） ───────────────────────────────────────
@@ -60,7 +61,17 @@ function drawPageNum(sl, num) {
 // ════════════════════════════════════════════════════════════
 function slideCover(pres) {
   const sl = pres.addSlide();
-  sl.background = { color: C.bg };
+
+  // ── 背景：若有指定圖片則用圖片＋深色覆蓋層，否則用純色 ──
+  if (COVER_BG_IMAGE) {
+    sl.background = { path: COVER_BG_IMAGE };
+    sl.addShape("rect", {
+      x: 0, y: 0, w: 13.33, h: 7.5,
+      fill: { color: C.bg, transparency: 25 }
+    });
+  } else {
+    sl.background = { color: C.bg };
+  }
 
   drawTopBar(sl);
 
