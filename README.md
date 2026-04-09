@@ -42,7 +42,7 @@ insight-report-skill/
 ├── package.json                           # 共用依賴
 ├── .gitignore
 ├── skills/
-│   ├── insight-report-summary/            # ① 市場洞察分析報告（Word）
+│   ├── insight-report-summary/            # ① 市場洞察分析報告摘要（Word）
 │   │   ├── SKILL.md
 │   │   └── references/
 │   │       └── docx-template.js
