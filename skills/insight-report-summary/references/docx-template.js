@@ -17,9 +17,7 @@ const PERIOD  = "2602MAT";                  // 報告期間標示
 const DATE_RANGE = "2025/03 ～ 2026/02";    // 觀測期（本期）
 const DATE_COMP  = "2024/03 ～ 2025/02";    // 觀測期（比較期）
 const SAMPLE_N   = "55,076";               // 樣本數
-const OUT_DIR = path.join(__dirname, "../../../output/insight-report-summary");
-if (!fs.existsSync(OUT_DIR)) fs.mkdirSync(OUT_DIR, { recursive: true });
-const OUT = path.join(OUT_DIR, `${BRAND}市場洞察分析報告_invos.docx`);
+const OUT = path.join(__dirname, `../../mnt/outputs/${BRAND}嬰幼兒奶粉市場洞察分析報告_invos.docx`);
 
 // ── Color helpers ──────────────────────────────────────────────
 const BLUE   = "2E75B6";
