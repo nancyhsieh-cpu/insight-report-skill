@@ -7,7 +7,8 @@ invosData AI Skills 集合 — 可重複使用的 prompt + 程式模板，搭配
 | Skill | 說明 | 輸出 | 使用順序 |
 |-------|------|------|---------|
 | [insight-report-summary](skills/insight-report-summary/) | 產出市場洞察分析報告摘要（四章 Word 文件） | .docx | 1. 先用這個 |
-| [bcg-analysis](skills/bcg-analysis/) | 產出 BCG 策略矩陣分析（通路 x 新舊客視角） | 三頁 PPTX | 2. 再用這個 |
+| [bcg-analysis](skills/bcg-analysis/) | BCG 策略矩陣 — 品牌成長策略版（高階會議用） | 四頁 PPTX | 2a. 或用這個 |
+| [bcg-channel-people](skills/bcg-channel-people/) | BCG 策略矩陣 — 通路佈局找對的人版（執行團隊用） | 四頁 PPTX | 2b. 或用這個 |
 | [reading-guide](skills/reading-guide/) | 產出簡報閱讀邏輯（內部業務提案參考手冊） | .docx | 3. 最後用這個 |
 
 ## 輸出範例
@@ -29,17 +30,35 @@ invosData AI Skills 集合 — 可重複使用的 prompt + 程式模板，搭配
 
 ---
 
-### ② bcg-analysis — BCG 策略矩陣分析（PPTX）
+### ② bcg-analysis — BCG 策略矩陣：品牌成長策略版（PPTX）
 
 > 範例檔案：[`台塑生醫MD醫之方_BCG策略建議_通路新舊客版.pptx`](examples/台塑生醫MD醫之方_BCG策略建議_通路新舊客版.pptx)
 
-三頁深色主題投影片：
+四頁深色主題投影片，**讀者：品牌經理/行銷主管/決策層**：
 
 | 頁面 | 內容 |
 |------|------|
-| **Slide 1：BCG 矩陣圖** | 以「通路 × 新舊客」為軸的 BCG 四象限定位圖 + 右側策略定位文字說明 |
-| **Slide 2：當前瓶頸 × 核心機會** | 5 個客群欄位，每欄列出 BCG 標籤、關鍵指標、當前瓶頸與核心機會 |
-| **Slide 3：行動建議 × invosData 方案** | 5 個客群欄位，每欄列出具體行動建議與對應的 invosData 服務方案 |
+| **Slide 1：封面頁** | 深色背景 + 中央圖示 + 「行動建議」標題 |
+| **Slide 2：BCG 矩陣圖** | 以「品牌掌握度 × 客群規模」為軸的 BCG 四象限 + 右側策略定位說明 |
+| **Slide 3：當前瓶頸 × 核心機會** | 5 個客群欄位，每欄列出瓶頸與機會（各附報告頁碼） |
+| **Slide 4：行動建議 × invosData 方案** | 5 個客群欄位，每欄列出行動建議與 invosData 服務方案 |
+
+---
+
+### ②b bcg-channel-people — BCG 策略矩陣：通路佈局找對的人版（PPTX）
+
+> 範例檔案：[`台塑生醫MD醫之方_BCG策略建議_通路找人版.pptx`](examples/台塑生醫MD醫之方_BCG策略建議_通路找人版.pptx)
+
+四頁深色主題投影片，**讀者：通路業務/通路行銷/電商營運/事業部主管**：
+
+| 頁面 | 內容 |
+|------|------|
+| **Slide 1：封面頁** | 深色背景 + 中央圖示 + 「行動建議」標題 |
+| **Slide 2：通路×客群 BCG 矩陣圖** | 以「客群掌握度 × 通路規模與潛力」為軸，象限用直覺語言（如「最知道誰在買，但人正在走」） |
+| **Slide 3：為什麼找不到對的人 × 如何用數據找到** | 5 欄（momo/康是美/寶雅/舊客/競品客），瓶頸指向「人找不到」，機會指向「數據怎麼找」 |
+| **Slide 4：通路佈局行動方案 × invosData 方案** | 產品×通路配對行動 + 「幫你在每個通路找到對的人」服務方案 |
+
+**兩版差異：** 品牌成長策略版用在前期提案/高階會議（由上往下看全局）；通路佈局版用在執行團隊工作坊（由下往上看落地）
 
 ---
 
@@ -94,13 +113,18 @@ insight-report-skill/
 ├── examples/                              # 各 skill 的實際產出範例
 │   ├── 台塑生醫MD醫之方益生菌市場洞察分析報告摘要_invos.docx
 │   ├── 台塑生醫MD醫之方_BCG策略建議_通路新舊客版.pptx
+│   ├── 台塑生醫MD醫之方_BCG策略建議_通路找人版.pptx
 │   └── 威德_睡眠益生菌_閱讀邏輯.docx
 ├── skills/
 │   ├── insight-report-summary/            # ① 市場洞察分析報告摘要（Word）
 │   │   ├── SKILL.md
 │   │   └── references/
 │   │       └── docx-template.js
-│   ├── bcg-analysis/                      # ② BCG 策略矩陣分析（PPTX）
+│   ├── bcg-analysis/                      # ② BCG 策略矩陣：品牌成長策略版（PPTX）
+│   │   ├── SKILL.md
+│   │   └── references/
+│   │       └── pptx-template.js
+│   ├── bcg-channel-people/                # ②b BCG 策略矩陣：通路佈局找對的人版（PPTX）
 │   │   ├── SKILL.md
 │   │   └── references/
 │   │       └── pptx-template.js
