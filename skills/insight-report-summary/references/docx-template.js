@@ -59,6 +59,22 @@ const BULLET = (text, bold = false) => new Paragraph({
 });
 const BLANK = () => new Paragraph({ children: [new TextRun("")], ...sp(0, 0) });
 
+// ── Source citation helper（每段數據／論述尾端附來源頁碼或標籤）─────
+// 用法：new Paragraph({ children: [new TextRun({...主文...}), srcRun("P8")] })
+// 標籤規則：P## = 原始頁碼 / P## + 推論 / 【策略推論】 / 【invos 服務】 / 【策略方向】
+const srcRun = (src) => new TextRun({
+  text: ` (${src})`, font: "Arial", size: 18, italics: true, color: "888888"
+});
+
+// P with source — 單段 Paragraph 主文 + 來源
+const PSRC = (text, src, opts = {}) => new Paragraph({
+  children: [
+    new TextRun({ text, font: "Arial", size: opts.size || 22, ...opts }),
+    srcRun(src)
+  ],
+  ...sp(opts.before || 0, opts.after || 120)
+});
+
 // ── Data Table (指標對比) ──────────────────────────────────────
 // headers: string[]
 // rows: string[][]

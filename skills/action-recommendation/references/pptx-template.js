@@ -167,6 +167,79 @@ const COLUMNS = [
 ];
 
 // ════════════════════════════════════════════════════════════
+//  SOURCES — Slide 3「附數據來源」所需，與 COLUMNS 一對一
+//  P## = 原始報告頁碼；
+//  【策略推論】= 非原始數據、為分析推論（寫入前必須先跟使用者確認）
+//  【invos 服務】= invos 產品能力，非原始數據
+//  【策略方向】= goal 為方向性語言、無具體 benchmark
+//
+//  （下方範例為 MD醫之方 益生菌 COLUMNS 對應；換新品牌時整組改）
+// ════════════════════════════════════════════════════════════
+const SOURCES = [
+  { // Col 1 守住 momo
+    problem: "報告 momo 通路頁",
+    goal: "報告 momo 通路頁（留存率 36%、RPC 3,253）",
+    insights: [
+      { body: "報告 momo 通路頁（客數 -18.6%、留存率 20%）" },
+      { body: "報告 momo 通路頁（RPC 2,517、舊客 RPC 3,243、通路均值 3,253）" },
+    ],
+    actions: [
+      { body: "【invos 服務】+ 策略推論" },
+      { body: "報告 momo 通路頁 + 策略推論" },
+      { body: "【invos 服務】+ 策略推論" },
+    ],
+  },
+  { // Col 2 新客入口 康是美×寶雅
+    problem: "報告 康是美 / 寶雅 通路頁",
+    goal: "報告 康是美 / 寶雅 通路頁",
+    insights: [
+      { body: "報告 康是美 通路頁（+32.8%人流、+37.3%營收、88%新客、PRC 2,416 vs 1,317）" },
+      { body: "報告 寶雅 通路頁（主要競品非康是美同款）" },
+    ],
+    actions: [
+      { body: "【invos 服務】+ 策略推論" },
+      { body: "【invos 服務】+ 策略推論" },
+      { body: "報告 寶雅 通路頁 + 策略推論" },
+    ],
+  },
+  { // Col 3 舊客留存×回購深化
+    problem: "報告 舊客分析頁",
+    goal: "報告 市場舊客佔比 + 估算推論",
+    insights: [
+      { body: "報告 舊客分析頁（舊客 20% vs 市場 37%、舊客 RPC 為新客 2.04 倍 vs 市場 1.86 倍）" },
+    ],
+    actions: [
+      { body: "【invos 服務】+ 策略推論" },
+      { body: "【invos 服務】+ 策略推論" },
+    ],
+  },
+  { // Col 4 競品轉換客
+    problem: "報告 競品客分析頁",
+    goal: "報告 競品客 +16%",
+    insights: [
+      { body: "報告 競品客分析頁（人流 +16%）" },
+    ],
+    actions: [
+      { body: "【invos 服務】+ 策略推論" },
+      { body: "【invos 服務】+ 策略推論" },
+    ],
+  },
+  { // Col 5 酷澎水貨×品牌溢價
+    problem: "報告 酷澎 通路頁",
+    goal: "報告 酷澎 通路頁（佔比 17%、RPC 1,160）",
+    insights: [
+      { body: "報告 酷澎 通路頁（客數 x3.7、RPC 1,160、82% 新客）" },
+      { body: "報告 酷澎 通路頁（銷額 +288%、回購率 35%）" },
+    ],
+    actions: [
+      { body: "【invos 服務】+ 策略推論" },
+      { body: "【invos 服務】+ 策略推論" },
+      { body: "【invos 服務】+ 策略推論" },
+    ],
+  },
+];
+
+// ════════════════════════════════════════════════════════════
 //  Helpers
 // ════════════════════════════════════════════════════════════
 function drawPageNum(sl, num) {
@@ -374,6 +447,145 @@ function slideOnePager(pres) {
 }
 
 // ════════════════════════════════════════════════════════════
+//  SLIDE 3 — 一頁式整合頁（附數據來源）
+//  與 slide 2 內容完全一致，每段 problem/goal/insight body/action body
+//  末尾加上淡灰色來源標籤 (P##) / 【策略推論】/【invos 服務】/【策略方向】
+// ════════════════════════════════════════════════════════════
+function slideOnePagerWithSources(pres) {
+  const sl = pres.addSlide();
+  sl.background = { color: C.bg };
+
+  const X0 = 0.20;
+  const CW = 2.54;
+  const GAP = 0.04;
+  const TOTAL_W = CW * 5 + GAP * 4;
+
+  const SUBTITLE_SOURCED = `${BRAND_NAME}｜通路客群行動建議【附數據來源】｜每段標示原始報告頁碼 (Pxx)、策略推論、invos 服務能力`;
+  sl.addShape("rect", {
+    x: X0, y: 0.10, w: TOTAL_W, h: 0.28,
+    fill: { color: C.labelBar }, line: { color: C.cardEdge, width: 0.5 }
+  });
+  sl.addText(SUBTITLE_SOURCED, {
+    x: X0 + 0.06, y: 0.10, w: TOTAL_W - 0.12, h: 0.28, margin: 0,
+    fontFace: FONT, fontSize: 10, bold: true, color: C.white, valign: "middle"
+  });
+
+  const HDR_Y = 0.46, HDR_H = 0.75;
+  const TOP_STRIP_H = 0.05;
+  const DIVIDER_Y_OFFSET = 0.46;
+  const DIVIDER_H = 0.02;
+
+  COLUMNS.forEach((col, i) => {
+    const cx = X0 + i * (CW + GAP);
+    const p = COL_PRESETS[col.preset];
+    const src = SOURCES[i];
+
+    sl.addShape("rect", { x: cx, y: HDR_Y, w: CW, h: HDR_H, fill: { type: "none" }, line: { color: p.edge, width: 0.8 } });
+    sl.addShape("rect", { x: cx, y: HDR_Y, w: CW, h: TOP_STRIP_H, fill: { color: p.edge }, line: { color: p.edge, width: 0 } });
+    sl.addShape("rect", { x: cx + 0.06, y: HDR_Y + DIVIDER_Y_OFFSET, w: CW - 0.14, h: DIVIDER_H, fill: { color: p.edge }, line: { color: p.edge, width: 0 } });
+
+    // 標題行（不加來源；標題本身非數據）
+    const titleRuns = [];
+    if (col.verb) titleRuns.push({ text: col.verb, options: { fontSize: 10, bold: true, color: C.white } });
+    titleRuns.push({ text: col.title, options: { fontSize: 10, bold: true, color: C.white } });
+    if (col.subtitle) titleRuns.push({ text: " " + col.subtitle, options: { fontSize: 10, bold: true, color: C.white } });
+    sl.addText(titleRuns, {
+      x: cx + 0.08, y: HDR_Y + 0.06, w: CW - 0.16, h: 0.24, margin: 0,
+      fontFace: FONT, valign: "middle"
+    });
+
+    // Problem + 來源
+    sl.addText([
+      { text: col.problem, options: { fontSize: 8, color: C.white } },
+      { text: ` (${src.problem})`, options: { fontSize: 7, color: C.dim } }
+    ], {
+      x: cx + 0.08, y: HDR_Y + 0.28, w: CW - 0.16, h: 0.18, margin: 0,
+      fontFace: FONT, valign: "middle"
+    });
+
+    // Goal + 來源
+    const goalRuns = [{ text: "目標｜", options: { fontSize: 8, bold: true, color: C.white } }];
+    col.goal.forEach(g => {
+      if (g.label) goalRuns.push({ text: g.label, options: { fontSize: 8, color: C.white } });
+      if (g.value) goalRuns.push({ text: g.value, options: { fontSize: 8, bold: true, color: C.white } });
+    });
+    goalRuns.push({ text: ` (${src.goal})`, options: { fontSize: 7, color: C.dim } });
+    sl.addText(goalRuns, {
+      x: cx + 0.08, y: HDR_Y + 0.50, w: CW - 0.16, h: 0.22, margin: 0,
+      fontFace: FONT, valign: "middle"
+    });
+  });
+
+  const KEY_LABEL_Y = 1.28;
+  drawLabelBar(sl, X0, KEY_LABEL_Y, TOTAL_W, "關鍵資訊（附來源）");
+
+  const KEY_Y = 1.64, KEY_H = 2.50;
+  COLUMNS.forEach((col, i) => {
+    const cx = X0 + i * (CW + GAP);
+    const p = COL_PRESETS[col.preset];
+    const src = SOURCES[i];
+    sl.addShape("rect", { x: cx, y: KEY_Y, w: CW, h: KEY_H, fill: { type: "none" }, line: { color: C.cardEdge, width: 0.5 } });
+    const runs = [];
+    col.insights.forEach((insight, j) => {
+      const isLast = (j === col.insights.length - 1);
+      runs.push({ text: insight.head, options: { fontSize: 10, bold: true, color: p.insightText, breakLine: true } });
+      runs.push({ text: insight.body, options: { fontSize: 8, color: C.white } });
+      runs.push({
+        text: ` (${src.insights[j].body})`,
+        options: { fontSize: 7, color: C.dim, breakLine: !isLast, paraSpaceAfter: !isLast ? 4 : 0 }
+      });
+    });
+    sl.addText(runs, {
+      x: cx + 0.10, y: KEY_Y + 0.08, w: CW - 0.20, h: KEY_H - 0.16, margin: 0,
+      fontFace: FONT, valign: "top", lineSpacingMultiple: BODY_LINE_SP
+    });
+  });
+
+  const ACT_LABEL_Y = 4.24;
+  drawLabelBar(sl, X0, ACT_LABEL_Y, TOTAL_W, "行動建議（附來源）");
+
+  const ACT_Y = 4.60, ACT_H = 2.45;
+  COLUMNS.forEach((col, i) => {
+    const cx = X0 + i * (CW + GAP);
+    const p = COL_PRESETS[col.preset];
+    const src = SOURCES[i];
+    sl.addShape("rect", { x: cx, y: ACT_Y, w: CW, h: ACT_H, fill: { type: "none" }, line: { color: C.cardEdge, width: 0.5 } });
+    const runs = [];
+    col.actions.forEach((a, j) => {
+      const isLast = (j === col.actions.length - 1);
+      runs.push({ text: a.head, options: { bullet: true, fontSize: 8, bold: true, color: p.actionText } });
+      runs.push({ text: a.body, options: { fontSize: 8, color: C.white } });
+      runs.push({
+        text: ` (${src.actions[j].body})`,
+        options: { fontSize: 7, color: C.dim, breakLine: !isLast, paraSpaceAfter: !isLast ? 4 : 0 }
+      });
+    });
+    sl.addText(runs, {
+      x: cx + 0.10, y: ACT_Y + 0.08, w: CW - 0.20, h: ACT_H - 0.16, margin: 0,
+      fontFace: FONT, valign: "top", lineSpacingMultiple: BODY_LINE_SP
+    });
+  });
+
+  const TAG_Y = 7.09, TAG_H = 0.20, TAG_W = 1.10, TAG_GAP = 0.10;
+  COLUMNS.forEach((col, i) => {
+    const cx = X0 + i * (CW + GAP);
+    col.tags.forEach((tag, t) => {
+      const tx = cx + 0.08 + t * (TAG_W + TAG_GAP);
+      sl.addShape("rect", {
+        x: tx, y: TAG_Y, w: TAG_W, h: TAG_H,
+        fill: { type: "none" }, line: { color: C.white, width: 1 }
+      });
+      sl.addText(tag, {
+        x: tx, y: TAG_Y, w: TAG_W, h: TAG_H, margin: 0,
+        fontFace: FONT, fontSize: 8, bold: true, color: C.white, align: "center", valign: "middle"
+      });
+    });
+  });
+
+  drawPageNum(sl, 3);
+}
+
+// ════════════════════════════════════════════════════════════
 //  MAIN
 // ════════════════════════════════════════════════════════════
 async function main() {
@@ -384,6 +596,7 @@ async function main() {
 
   slideCover(pres);
   slideOnePager(pres);
+  slideOnePagerWithSources(pres);
 
   await pres.writeFile({ fileName: OUT });
   console.log("✅  Saved:", OUT);

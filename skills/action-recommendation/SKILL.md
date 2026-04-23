@@ -53,7 +53,7 @@ description: >
    - 壞例：「加強品牌曝光」（空話、非 invosData 能交付）
    - 好例：「圈選 69% momo 品類流失買者投放廣告，推送品類需求內容重建使用習慣」（可執行、可歸因）
 
-**固定輸出：2 頁深色主題 PPTX**
+**固定輸出：3 頁深色主題 PPTX**
 - Slide 1：封面頁（同既有 skills 的封面樣式，「行動建議」大字）
 - Slide 2：**一頁式整合頁**，版面如下
   ```
@@ -71,6 +71,7 @@ description: >
   │ [t][t]│ [t][t]│ [t]  │ [t][t]│ [t][t]│  ← 底部 tag（類別標籤）
   └──────┴──────┴──────┴──────┴──────┘
   ```
+- Slide 3：**附數據來源版**（與 Slide 2 內容 100% 相同，每段 problem/goal/insight/action body 末尾加上 `(P##)` 頁碼或 `【策略推論】`／`【invos 服務】`／`【策略方向】` 標籤，淡灰色 fontSize 7 不干擾主讀）。這是 Repo 級硬性規則的落地機制：每個數據與推論可逐一追溯原始頁碼，防止客戶追問「這個數字從哪來？」時答不出。
 
 ---
 
@@ -165,9 +166,47 @@ Tag 用黑底白字，放在行動建議卡底部。
 
 ---
 
+## Step 3.5：建立 SOURCES 對照表（Slide 3 必備）
+
+與 COLUMNS 一對一定義每段內容的來源頁。AI 在撰寫 COLUMNS 當下就要同步填 SOURCES，不可事後補填（事後補填容易忘、錯配、或掰出推論當數據）。
+
+```js
+const SOURCES = [
+  { // Col 1
+    problem: "P##",                    // 原始報告頁碼
+    goal: "P##, P##",                  // 多頁用逗號分隔
+    insights: [
+      { body: "P##" },                 // 純數據段落
+      { body: "P##, 末句策略推論" },   // 數據 + 推論的混合段落
+    ],
+    actions: [
+      { body: "【invos 服務】" },       // invos 產品能力，非原始數據
+      { body: "P## + 策略推論" },       // 以某頁數據為基礎的推論
+      { body: "【策略推論】" },         // 完全沒有原始數據支持的推論
+    ],
+  },
+  // ... Col 2-5
+];
+```
+
+**來源標籤規則：**
+| 標籤 | 意義 | 何時使用 |
+|------|------|---------|
+| `P##` | 原始報告頁碼 | 內容來自原始報告的數據／描述 |
+| `P##, P##` | 多頁組合 | 內容綜合自多頁數據 |
+| `P## + 策略推論` | 數據 + 推論 | 以 P## 為基礎做的行動推論 |
+| `P##, 末句策略推論` | 數據 + 結尾推論 | 前段是數據、結尾是推論 |
+| `【策略推論】` | 純推論 | 完全沒有原始數據支持 |
+| `【invos 服務】` | 產品能力 | 引用 invos Insight/Media/API 產品能力 |
+| `【策略方向】` | 動作方向語言 | goal 只寫方向（「對標通路均值」）不寫數字時 |
+
+**硬性規則（Repo 級）：** 若某段是【策略推論】或【invos 服務】（非原始數據），必須在寫進 COLUMNS 之前就主動向使用者標示「這段是推論、邏輯為何、請確認」，確認後才寫進檔案。詳見 Repo README 的「推論內容硬性規則」。
+
+---
+
 ## Step 4：生成 PPTX
 
-讀取 `references/pptx-template.js`，**只改 BRAND CONFIG 區塊與 COLUMNS 陣列**，版面程式碼勿動：
+讀取 `references/pptx-template.js`，**只改 BRAND CONFIG 區塊、COLUMNS 陣列與 SOURCES 陣列**，版面程式碼勿動。COLUMNS 與 SOURCES 結構一對一，索引順序相同：
 
 ```bash
 cd /sessions/<session-id>/docx_work && npm install pptxgenjs 2>/dev/null || true
@@ -199,16 +238,19 @@ import zipfile, re
 path = '<output_pptx_path>'
 with zipfile.ZipFile(path) as z:
     slides = [n for n in z.namelist() if re.match(r'ppt/slides/slide\d+\.xml', n)]
-    print(f'Slides: {len(slides)}')  # 應為 2
-    xml = z.read('ppt/slides/slide2.xml').decode('utf-8', errors='ignore')
-    # 每欄應有 header/關鍵資訊/行動建議 三段內容
-    print('關鍵資訊' in xml, '行動建議' in xml, '目標' in xml)
+    print(f'Slides: {len(slides)}')  # 應為 3
+    xml2 = z.read('ppt/slides/slide2.xml').decode('utf-8', errors='ignore')
+    xml3 = z.read('ppt/slides/slide3.xml').decode('utf-8', errors='ignore')
+    print('slide2 完整:', '關鍵資訊' in xml2, '行動建議' in xml2, '目標' in xml2)
+    print('slide3 附來源:', '附數據來源' in xml3, 'P' in xml3)
 ```
 
 檢查清單：
-- [ ] 2 頁投影片存在
+- [ ] 3 頁投影片存在
 - [ ] Slide 1 封面含「行動建議」標題
 - [ ] Slide 2 標題含 `品牌｜通路客群行動建議｜當前瓶頸 x 核心機會 x invosData 數據解決方案`
+- [ ] Slide 3 標題含「附數據來源」
+- [ ] Slide 3 每段 problem / goal / insight body / action body 末尾都有 `(P##)` 或 `【策略推論】`／`【invos 服務】`／`【策略方向】` 標籤
 - [ ] 5 欄每欄的 header 目標句都有「對標XX」或具體 benchmark 數字
 - [ ] 每欄行動建議都能對應關鍵資訊裡的 why / so what
 - [ ] 每欄至少 1 個 tag
@@ -233,3 +275,6 @@ with zipfile.ZipFile(path) as z:
 | 關鍵資訊只列數字沒 so what | 每段結尾加推論：「代表…」「意味著…」「所以…」 |
 | 5 欄切法跟 bcg 不同 | 沿用既有切法，避免客戶困惑 |
 | 憑空掰 benchmark | 寧可只寫方向（「貼近市場水平」），不要編數字 |
+| COLUMNS 與 SOURCES 數字錯配（群組 A 的數字寫到 B 欄） | 填 SOURCES 時一定要重新對照原始報告頁、不要憑記憶；每欄填完立刻交叉驗證 |
+| 把推論當成有數據支持的樣子寫入 COLUMNS | 寫之前先在 SOURCES 標記【策略推論】；若該段含推論，必須先跟使用者確認邏輯再寫進檔案 |
+| 漏產 Slide 3 | 產檔後檢查 slides 數 = 3；若只有 2 頁代表 SOURCES 沒填或 slideOnePagerWithSources() 沒被呼叫 |
