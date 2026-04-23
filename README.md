@@ -2,6 +2,11 @@
 
 invosData AI Skills 集合 — 可重複使用的 prompt + 程式模板，搭配任何 AI 工具生成市場洞察報告。
 
+> ⚠️ **PPTX 排版硬性規則（所有 PPTX skill 必遵守）：所有標題列一律限縮在一行內。**
+> 包含欄位 header、象限卡、策略定位框的 title/subtitle/problem/goal，以及各 bullet 的粗體小標。
+> 欄寬 2.54"、fontSize 8 時，中文 ≤ 15 字、英數混合 ≤ 20 字為安全線。超過就**簡化用字**，
+> 不要縮字型、不要加大卡片、不要改行距硬塞。產檔後務必打開 PPTX 目測確認沒有任何一列折行。
+
 ## Skills 總覽
 
 | Skill | 說明 | 輸出 | 使用順序 |
@@ -9,7 +14,8 @@ invosData AI Skills 集合 — 可重複使用的 prompt + 程式模板，搭配
 | [insight-report-summary](skills/insight-report-summary/) | 產出市場洞察分析報告摘要（四章 Word 文件） | .docx | 1. 先用這個 |
 | [bcg-analysis](skills/bcg-analysis/) | BCG 策略矩陣 — 品牌成長策略版（高階會議用） | 四頁 PPTX | 2a. 或用這個 |
 | [bcg-channel-people](skills/bcg-channel-people/) | BCG 策略矩陣 — 通路佈局找對的人版（執行團隊用） | 四頁 PPTX | 2b. 或用這個 |
-| [reading-guide](skills/reading-guide/) | 產出簡報閱讀邏輯（內部業務提案參考手冊） | .docx | 3. 最後用這個 |
+| [action-recommendation](skills/action-recommendation/) | 一頁式行動建議（把 BCG 濃縮成單頁給客戶看） | 兩頁 PPTX | 3. 收斂提案用 |
+| [reading-guide](skills/reading-guide/) | 產出簡報閱讀邏輯（內部業務提案參考手冊） | .docx | 4. 最後用這個 |
 
 ## 輸出範例
 
@@ -62,7 +68,27 @@ invosData AI Skills 集合 — 可重複使用的 prompt + 程式模板，搭配
 
 ---
 
-### ③ reading-guide — 簡報閱讀邏輯（Word）
+### ③ action-recommendation — 一頁式行動建議（PPTX）
+
+> 範例檔案：[`台塑生醫MD醫之方_行動建議.pptx`](examples/台塑生醫MD醫之方_行動建議.pptx)
+
+兩頁深色主題投影片，**讀者：客戶決策者／採購窗口**，把 BCG 簡報的「當前瓶頸 × 核心機會 × invosData 解決方案」濃縮到單頁：
+
+| 頁面 | 內容 |
+|------|------|
+| **Slide 1：封面頁** | 深色背景 + 中央圖示 + 「行動建議」標題 |
+| **Slide 2：一頁式整合頁** | 5 欄 × 3 列：Header 目標卡（動詞+通路/客群+對標市場的目標）／關鍵資訊（突破性針對性洞察）／行動建議（invosData 可做的事）＋底部類別 tag |
+
+**三大核心要素（每欄都要齊）：**
+1. 突破性與針對性的關鍵資訊（非通論、對該客群獨有）
+2. 對標整體市場或通路的關鍵目標（每個數字都有 benchmark）
+3. 針對關鍵目標的 invosData 行動建議（可執行、可歸因）
+
+**使用時機：** 跑過 bcg-analysis / bcg-channel-people 後，把四頁濃縮成單頁給客戶收斂提案時用；欄位切法沿用 bcg，不重新切。
+
+---
+
+### ④ reading-guide — 簡報閱讀邏輯（Word）
 
 > 範例檔案：[`威德_睡眠益生菌_閱讀邏輯.docx`](examples/威德_睡眠益生菌_閱讀邏輯.docx)
 
@@ -89,7 +115,7 @@ invosData AI Skills 集合 — 可重複使用的 prompt + 程式模板，搭配
    > 此為 2025/12 MAT 益生菌市場洞察分析報告，請針對品牌「台塑生醫MD醫之方」做分析
 4. AI 會依照步驟自動分析並生成報告
 
-**建議流程：** `insight-report-summary`（Word 洞察報告）→ `bcg-analysis`（BCG 策略 PPTX）→ `reading-guide`（內部提案手冊）
+**建議流程：** `insight-report-summary`（Word 洞察報告）→ `bcg-analysis` 或 `bcg-channel-people`（BCG 策略 PPTX）→ `action-recommendation`（一頁式行動建議）→ `reading-guide`（內部提案手冊）
 
 ### 方式二：手動修改 template 執行
 
@@ -114,6 +140,7 @@ insight-report-skill/
 │   ├── 台塑生醫MD醫之方益生菌市場洞察分析報告摘要_invos.docx
 │   ├── 台塑生醫MD醫之方_BCG策略建議_通路新舊客版.pptx
 │   ├── 台塑生醫MD醫之方_BCG策略建議_通路找人版.pptx
+│   ├── 台塑生醫MD醫之方_行動建議.pptx
 │   └── 威德_睡眠益生菌_閱讀邏輯.docx
 ├── skills/
 │   ├── insight-report-summary/            # ① 市場洞察分析報告摘要（Word）
@@ -128,7 +155,11 @@ insight-report-skill/
 │   │   ├── SKILL.md
 │   │   └── references/
 │   │       └── pptx-template.js
-│   ├── reading-guide/                     # ③ 簡報閱讀邏輯（內部提案手冊）
+│   ├── action-recommendation/             # ③ 一頁式行動建議（PPTX，濃縮 BCG 給客戶看）
+│   │   ├── SKILL.md
+│   │   └── references/
+│   │       └── pptx-template.js
+│   ├── reading-guide/                     # ④ 簡報閱讀邏輯（內部提案手冊）
 │   │   ├── SKILL.md
 │   │   └── references/
 │   │       └── generate_guide.js
@@ -138,6 +169,8 @@ insight-report-skill/
 └── output/                                # 生成的報告（gitignored）
     ├── insight-report-summary/
     ├── bcg-analysis/
+    ├── bcg-channel-people/
+    ├── action-recommendation/
     └── reading-guide/
 ```
 
