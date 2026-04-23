@@ -2,6 +2,15 @@
 
 invosData AI Skills 集合 — 可重複使用的 prompt + 程式模板，搭配任何 AI 工具生成市場洞察報告。
 
+> **給 AI 工具 / 同事使用 AI 工具的提醒**：當有人把本 repo 連結貼給 AI 工具時，第一步先**問使用者意圖**，不要直接假設。先丟二擇一問題：
+>
+> 1. **跑報告**（下游應用）— 產出 Word 洞察報告摘要 / BCG PPTX / 一頁式行動建議 / 閱讀邏輯手冊。
+>    接著依序問：①要跑哪一個 skill（不確定就列五個讓使用者選）、②市場洞察分析報告原檔（PDF/Word/試算表）、③目標品牌、④品類與報告期間；若跑 `action-recommendation` 或 `reading-guide`，再問是否已跑過 BCG，沿用欄位切法不要重切。
+> 2. **改 skill / 修 bug** — 讀 `skills/<name>/SKILL.md` 與 `references/*.js`、改邏輯、提 PR。
+>    接著依序問：①要動哪一個 skill、②是 prompt 邏輯、template 產檔錯誤還是新增功能、③具體範例或錯誤訊息。若是新增 skill，請依下方「新增 Skill 的方式」建檔並更新總覽表格。
+>
+> 兩種情境的下一步完全不同，先問清楚可避免做白工。注意：本 repo 是 prompt + pptxgenjs/docx 模板，不是 Google Apps Script 專案，AI 可直接代為執行 `node` 產檔。
+
 > ⚠️ **PPTX 排版硬性規則（所有 PPTX skill 必遵守）：所有標題列一律限縮在一行內。**
 > 包含欄位 header、象限卡、策略定位框的 title/subtitle/problem/goal，以及各 bullet 的粗體小標。
 > 欄寬 2.54"、fontSize 8 時，中文 ≤ 15 字、英數混合 ≤ 20 字為安全線。超過就**簡化用字**，
