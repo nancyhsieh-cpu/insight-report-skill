@@ -4,8 +4,8 @@ invosData AI Skills 集合 — 可重複使用的 prompt + 程式模板，搭配
 
 > **給 AI 工具 / 同事使用 AI 工具的提醒**：當有人把本 repo 連結貼給 AI 工具時，第一步先**問使用者意圖**，不要直接假設。先丟二擇一問題：
 >
-> 1. **跑報告**（下游應用）— 產出 Word 洞察報告摘要 / BCG PPTX / 一頁式行動建議 / 閱讀邏輯手冊。
->    接著依序問：①要跑哪一個 skill（不確定就列五個讓使用者選）、②市場洞察分析報告原檔（PDF/Word/試算表）、③目標品牌、④品類與報告期間；若跑 `action-recommendation` 或 `reading-guide`，再問是否已跑過 BCG，沿用欄位切法不要重切。
+> 1. **跑報告**（下游應用）— 產出 Word 洞察報告摘要 / 一頁式行動建議 / 閱讀邏輯手冊 / BCG PPTX（舊版迭代）。
+>    接著依序問：①要跑哪一個 skill（**建議主力使用 `action-recommendation`（第三代、最新版）**；`bcg-analysis`（第一代）/ `bcg-channel-people`（第二代）是舊版迭代，仍可用，適合需要完整四頁簡報的場景）、②市場洞察分析報告原檔（PDF/Word/試算表）、③目標品牌、④品類與報告期間；若跑 `action-recommendation` 或 `reading-guide`，再問是否已跑過舊版 BCG，沿用欄位切法不要重切。
 > 2. **改 skill / 修 bug** — 讀 `skills/<name>/SKILL.md` 與 `references/*.js`、改邏輯、提 PR。
 >    接著依序問：①要動哪一個 skill、②是 prompt 邏輯、template 產檔錯誤還是新增功能、③具體範例或錯誤訊息。若是新增 skill，請依下方「新增 Skill 的方式」建檔並更新總覽表格。
 >
@@ -21,10 +21,12 @@ invosData AI Skills 集合 — 可重複使用的 prompt + 程式模板，搭配
 | Skill | 說明 | 輸出 | 使用順序 |
 |-------|------|------|---------|
 | [insight-report-summary](skills/insight-report-summary/) | 產出市場洞察分析報告摘要（四章 Word 文件） | .docx | 1. 先用這個 |
-| [bcg-analysis](skills/bcg-analysis/) | BCG 策略矩陣 — 品牌成長策略版（高階會議用） | 四頁 PPTX | 2a. 或用這個 |
-| [bcg-channel-people](skills/bcg-channel-people/) | BCG 策略矩陣 — 通路佈局找對的人版（執行團隊用） | 四頁 PPTX | 2b. 或用這個 |
-| [action-recommendation](skills/action-recommendation/) | 一頁式行動建議（把 BCG 濃縮成單頁給客戶看） | 兩頁 PPTX | 3. 收斂提案用 |
-| [reading-guide](skills/reading-guide/) | 產出簡報閱讀邏輯（內部業務提案參考手冊） | .docx | 4. 最後用這個 |
+| [action-recommendation](skills/action-recommendation/) | 一頁式行動建議（第三代 BCG，最新版、推薦主力） | 兩頁 PPTX | 2. ⭐ 推薦用這個 |
+| [bcg-analysis](skills/bcg-analysis/) | BCG 策略矩陣 — 品牌成長策略版（第一代，舊版迭代、仍可用） | 四頁 PPTX | 2a. 需完整四頁時用 |
+| [bcg-channel-people](skills/bcg-channel-people/) | BCG 策略矩陣 — 通路佈局找對的人版（第二代，舊版迭代、仍可用） | 四頁 PPTX | 2b. 需完整四頁時用 |
+| [reading-guide](skills/reading-guide/) | 產出簡報閱讀邏輯（內部業務提案參考手冊） | .docx | 3. 最後用這個 |
+
+> **迭代說明**：BCG 系列已迭代三代 — `bcg-analysis`（第一代）→ `bcg-channel-people`（第二代）→ `action-recommendation`（第三代、最新版、推薦主力）。舊版仍保留可用，適合需要完整四頁簡報的場景。
 
 ## 輸出範例
 
@@ -93,7 +95,7 @@ invosData AI Skills 集合 — 可重複使用的 prompt + 程式模板，搭配
 2. 對標整體市場或通路的關鍵目標（每個數字都有 benchmark）
 3. 針對關鍵目標的 invosData 行動建議（可執行、可歸因）
 
-**使用時機：** 跑過 bcg-analysis / bcg-channel-people 後，把四頁濃縮成單頁給客戶收斂提案時用；欄位切法沿用 bcg，不重新切。
+**使用時機：** 本 skill 為**第三代 BCG、最新版、推薦主力**。可直接獨立使用（skill 會依報告原檔內建切 5 欄客群/通路）；若先跑過舊版 bcg-analysis / bcg-channel-people，欄位切法沿用 bcg 不重切，避免客戶看到兩份不一致。
 
 ---
 
@@ -124,7 +126,9 @@ invosData AI Skills 集合 — 可重複使用的 prompt + 程式模板，搭配
    > 此為 2025/12 MAT 益生菌市場洞察分析報告，請針對品牌「台塑生醫MD醫之方」做分析
 4. AI 會依照步驟自動分析並生成報告
 
-**建議流程：** `insight-report-summary`（Word 洞察報告）→ `bcg-analysis` 或 `bcg-channel-people`（BCG 策略 PPTX）→ `action-recommendation`（一頁式行動建議）→ `reading-guide`（內部提案手冊）
+**推薦流程（最新版）：** `insight-report-summary`（Word 洞察報告）→ `action-recommendation`（一頁式行動建議，第三代）→ `reading-guide`（內部提案手冊）
+
+**舊版迭代流程（仍可用，需要完整四頁簡報時）：** `insight-report-summary` → `bcg-analysis`（第一代）或 `bcg-channel-people`（第二代）→ `action-recommendation`（沿用 bcg 切法濃縮單頁）→ `reading-guide`
 
 ### 方式二：手動修改 template 執行
 

@@ -12,6 +12,10 @@ description: >
 
 # invosData 通路佈局 × 客群配對策略矩陣 Skill
 
+> 📦 **迭代狀態：第二代 BCG skill（舊版迭代，仍可用）。**
+> 最新版為 `action-recommendation`（第三代、**推薦主力**）；第一代為 `bcg-analysis`。
+> 若只需要單頁行動建議，**優先使用 `action-recommendation`**；本 skill 保留給需要完整四頁、並以通路×產品配對為主軸的場景（執行團隊工作坊／通路業務提案）。
+
 > ⚠️ **排版硬性規則（所有 PPTX skill 通用）：所有標題列一律限縮在一行內。**
 > 包含象限卡、欄位 header、策略定位框的 title/subtitle，以及各 bullet 的粗體小標。
 > 欄寬 2.54"、fontSize 8 時，中文字 ≤ 15 字、英文+數字混合 ≤ 20 字為安全線。超過就**簡化用字**，
