@@ -2,14 +2,25 @@
 
 invosData AI Skills 集合 — 可重複使用的 prompt + 程式模板，搭配任何 AI 工具生成市場洞察報告。
 
-> **給 AI 工具 / 同事使用 AI 工具的提醒**：當有人把本 repo 連結貼給 AI 工具時，第一步先**問使用者意圖**，不要直接假設。先丟二擇一問題：
+> **給 AI 工具 / 同事使用 AI 工具的提醒**：當有人把本 repo 連結貼給 AI 工具時，第一步先**問使用者意圖**，不要直接假設。先丟以下選項：
 >
-> 1. **跑報告**（下游應用）— 產出 Word 洞察報告摘要 / 一頁式行動建議 / 閱讀邏輯手冊 / BCG PPTX（舊版迭代）。
->    接著依序問：①要跑哪一個 skill（**建議主力使用 `action-recommendation`（第三代、最新版）**；`bcg-analysis`（第一代）/ `bcg-channel-people`（第二代）是舊版迭代，仍可用，適合需要完整四頁簡報的場景）、②市場洞察分析報告原檔（PDF/Word/試算表）、③目標品牌、④品類與報告期間；若跑 `action-recommendation` 或 `reading-guide`，再問是否已跑過舊版 BCG，沿用欄位切法不要重切。
-> 2. **改 skill / 修 bug** — 讀 `skills/<name>/SKILL.md` 與 `references/*.js`、改邏輯、提 PR。
+> 1. **收斂彙整一份數據報告的摘要與行動建議**（推薦完整流程）
+>    若使用者選到這個，先問是否要依序跑下列三個 skill：
+>    - ① `insight-report-summary` → 產出 Word 四章摘要
+>    - ② `action-recommendation` → 產出兩頁 PPTX（含 Slide 3 數據來源版），會沿用 ① 的客群/通路切法
+>    - ③ `reading-guide` → 產出內部業務提案手冊 Word
+>
+>    **同步提醒使用者**：過程中若 AI 遇到「報告原檔沒有直接支持」的推論（例如目標數字、突破方向），會先停下來跟使用者確認再寫進產出檔，不會直接編造。
+>
+>    使用者確認流程後，依序問：①市場洞察分析報告原檔（PDF/Word/試算表）、②目標品牌、③品類與報告期間。
+>
+> 2. **跑單一 skill**（只想要某一份產出，例如僅 Word 摘要 / 僅 PPTX / 僅閱讀邏輯）
+>    接著依序問：①要跑哪一個 skill（**主力使用 `action-recommendation`（第三代、最新版）**；`bcg-analysis`（第一代）/ `bcg-channel-people`（第二代）是舊版迭代，仍可用，適合需要完整四頁簡報的場景）、②市場洞察分析報告原檔、③目標品牌、④品類與報告期間；若跑 `action-recommendation` 或 `reading-guide`，再問是否已跑過舊版 BCG，沿用欄位切法不要重切。
+>
+> 3. **改 skill / 修 bug** — 讀 `skills/<name>/SKILL.md` 與 `references/*.js`、改邏輯、提 PR。
 >    接著依序問：①要動哪一個 skill、②是 prompt 邏輯、template 產檔錯誤還是新增功能、③具體範例或錯誤訊息。若是新增 skill，請依下方「新增 Skill 的方式」建檔並更新總覽表格。
 >
-> 兩種情境的下一步完全不同，先問清楚可避免做白工。注意：本 repo 是 prompt + pptxgenjs/docx 模板，不是 Google Apps Script 專案，AI 可直接代為執行 `node` 產檔。
+> 三種情境的下一步完全不同，先問清楚可避免做白工。注意：本 repo 是 prompt + pptxgenjs/docx 模板，不是 Google Apps Script 專案，AI 可直接代為執行 `node` 產檔。
 
 > ⚠️ **PPTX 排版硬性規則（所有 PPTX skill 必遵守）：所有標題列一律限縮在一行內。**
 > 包含欄位 header、象限卡、策略定位框的 title/subtitle/problem/goal，以及各 bullet 的粗體小標。
