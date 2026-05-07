@@ -3,3 +3,4 @@ output/
 output/*.pptx
 .env
 .DS_Store
+~$*.docx
